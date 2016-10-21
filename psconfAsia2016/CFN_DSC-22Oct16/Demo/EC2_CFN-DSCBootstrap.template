@@ -1,20 +1,21 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "A template to deploy two web servers across two availability zones with a load balancer for directing traffic across each.",
+  "Description": "A template to deploy a web server using DSC bootstrap from a Github repo.",
   "Parameters": {
     "BootstrapperScript": {
-      "Description": "The URL to a ZIP file containing the PowerShell script package to bootstrap EC2 instances in this CloudFormation template.",
-      "Type": "String"
+      "Description": "The URL to a ZIP file containing the PowerShell script package to bootstrap EC2 instance in this CloudFormation template.",
+      "Type": "String",
+      "Default": "https://github.com/rchaganti/Presentations/raw/master/psconfAsia2016/CFN_DSC-22Oct16/Demo/WebServerDSCBootstrap.zip"
     },
     "KeyPairName": {
-      "Description": "The EC2 key pair used to launch web instances",
+      "Description": "The EC2 key pair used to launch web instance",
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Default": "DSCInstance"
     },
     "WebserverImageId": {
       "Description": "The EC2 AmiId to use for web",
       "Type": "String",
-      "Default": "ami-f9760dc3"
+      "Default": "ami-9f5efbff"
     },
     "WebserverInstanceType": {
       "Description": "The EC2 instance type to use for web",

@@ -8,5 +8,11 @@
     }
 }
 
-WebServerDemo -OutputPath ${env:TEMP}
-Start-DscConfiguration -Path "${env:TEMP}\WebServerDemo" -Force -Wait -Verbose
+if (-not (test-path C:\Temp))
+{
+    $null = New-Item -Path C:\temp -ItemType Directory
+}
+
+WebServerDemo -OutputPath C:\Temp\WebServerDemo
+
+Start-DscConfiguration -Path C:\Temp\WebServerDemo -Force -Wait -Verbose
