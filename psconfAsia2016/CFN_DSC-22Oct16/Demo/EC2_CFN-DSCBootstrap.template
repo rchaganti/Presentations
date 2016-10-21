@@ -116,7 +116,7 @@
                 "waitAfterCompletion": "0"
               },
               "01-configure-webserver": {
-                "command": "powershell.exe -Command C:\\cfn\\Zephyr\\Scripts\\6_Demo-WebServerDSCBootstrap.ps1.ps1",
+                "command": "powershell.exe -Command C:\\cfn\\Zephyr\\Scripts\\6_Demo-WebServerDSCBootstrap.ps1",
                 "waitAfterCompletion": "0"
               }
             },
@@ -147,9 +147,6 @@
             "Ref": "WebSecurityGroup"
           }
         ],
-        "IamInstanceProfile": {
-          "Ref": "InstanceProfile"
-        },
         "KeyName": {
           "Ref": "KeyPairName"
         },
