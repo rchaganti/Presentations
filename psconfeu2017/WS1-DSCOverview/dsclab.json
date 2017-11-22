@@ -1,0 +1,209 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "metadata": {
+                "description": "Storage Account name for the VM VHDs and other artifacts."
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "Virtual Network name for the VMs."
+            }
+        },
+        "keyVaultName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "metadata": {
+                "description": "Key Vault name for secrets and certificates"
+            }
+        },
+        "automationAccountName": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50,
+            "metadata": {
+                "description": "Automation Account Name for DSC nodes and pull services."
+            }
+        },
+        "dnsName": {
+            "type": "string",
+            "metadata": {
+                "description": "Unique public DNS prefix for the deployment. The fqdn will look something like '<dnsname>.westus.cloudapp.azure.com'."
+            }
+        },
+        "adminUserName": {
+            "type": "string",
+            "defaultValue": "admin",
+            "metadata": {
+                "description": "administrator user name for the VMs."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "administrator user password for the VMs."
+            }
+        },
+        "adDomainName": {
+            "type": "string",
+            "defaultValue": "learndsc.lab",
+            "metadata": {
+                "description": "Domain name FQDN for the active directory."
+            }
+        }
+    },
+    "variables": {
+        "virtualNetPrefix": "10.0.0.0/16",
+        "vNetSubnetName": "[concat(resourceGroup().Location, '-', parameters('virtualNetworkName'), '-', 'Subnet')]",
+        "vNetSubnetPrefix": "10.0.0.0/24",
+        "vNetSubnetID": "[concat(resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName')),'/subnets/',variables('vNetSubnetName'))]",
+        "dnsServerPrivateIp": "10.0.0.8",
+        "server2016VMCount": 3,
+        "server2012R2VMCount": 2,
+        "linuxVMCount": 2
+    },
+    "resources": [
+        {
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[ResourceGroup().Location]",
+            "apiVersion": "2015-05-01-preview",
+            "properties": {
+                "accountType": "Standard_LRS"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/availabilitySets",
+            "name": "availabilitySet",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "properties": {}
+        },
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[ResourceGroup().Location]",
+            "apiVersion": "2015-05-01-preview",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('virtualNetPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('vNetSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('vNetSubnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "dcvmnif",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(reference(parameters('virtualNetworkName')).subnets[0].name,'ws2016-dc-nifconfig')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[variables('dnsServerPrivateIp')]",
+                            "subnet": {
+                                "id": "[variables('vNetSubnetID')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "WS2016-DC",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', 'dcvmnif')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A2"
+                },
+                "osProfile": {
+                    "computerName": "WS2016-DC",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "secrets": [
+                        {
+                            "sourceVault": {
+                                "id": "[concat(resourceGroup().id, '/providers/Microsoft.KeyVault/vaults/', parameters('KeyVaultName'))]"
+                            },
+                            "vaultCertificates": [
+                                {
+                                    "certificateUrl": "[concat('https://',parameters('dnsName'),'.vault.azure.net:443/certificates/WS2016-PullSrv')]",
+                                    "certificateStore": "My"
+                                }
+                            ]
+                        }
+                    ],
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "winRM": {
+                            "listeners": [
+                                {
+                                    "protocol": "Http"
+                                },
+                                {
+                                    "protocol": "Https",
+                                    "certificateUrl": "[concat('https://',parameters('keyVaultName'),'.vault.azure.net:443/certificates/WS2016-PullSrv')]"
+                                }
+                            ]
+                        },
+                        "enableAutomaticUpdates": true
+                    }
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "ws2016-dc",
+                        "vhd": {
+                            "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/','ws2016-dc.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces','dcvmnif')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": "true",
+                        "storageUri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
