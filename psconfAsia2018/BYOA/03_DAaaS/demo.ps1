@@ -1,4 +1,4 @@
-﻿ipmo D:\Github\DeploymentAutomationAsAService\modules\deploymentTaskEngine\deploymentTaskEngine.psm1 -Force
+﻿ipmo C:\Github\DeploymentAutomationAsAService\modules\deploymentTaskEngine\deploymentTaskEngine.psm1 -Force
 
 Get-InfrastructureType
 Get-InfrastructureType -Name 'Microsoft Storage Spaces Direct'

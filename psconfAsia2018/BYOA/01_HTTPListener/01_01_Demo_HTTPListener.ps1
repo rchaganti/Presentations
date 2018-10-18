@@ -1,4 +1,4 @@
-﻿Set-Location -Path C:\Documents\GitHub\Presentations\psconfAsia2018\BYOA\01_HTTPListener
+﻿Set-Location -Path C:\GitHub\Presentations\psconfAsia2018\BYOA\01_HTTPListener
 
 #Web Server Demo
 psEdit .\01_00_Demo_HTTPListener.ps1
