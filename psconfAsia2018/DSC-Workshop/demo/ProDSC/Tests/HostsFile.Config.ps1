@@ -13,8 +13,8 @@
     {
         HostsFile HostEntry
         {
-            HostName  = 'TestServer10'
-            IPAddress = '172.16.100.10'
+            HostName  = 'googleDNS'
+            IPAddress = '8.8.8.8'
             Ensure    = 'Present'
         }
     }

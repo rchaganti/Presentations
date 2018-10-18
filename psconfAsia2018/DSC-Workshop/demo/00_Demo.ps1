@@ -20,4 +20,4 @@ Invoke-Pester -Script .\ProDSC\Tests\05_HostsFile-Unit.Tests.ps1 -Verbose
 Invoke-Pester -Script .\ProDSC\Tests\06_HostsFile-Integration.Tests.ps1 -Verbose
 
 #DSC Resource - Operations Validation
-Invoke-Pester -Script .\ProDSC\Tests\06_HostsFile-Integration.Tests.ps1 -Verbose
+Invoke-Pester -Script .\ProDSC\Tests\07_HostsFile-Operations.Tests.ps1 -Verbose
