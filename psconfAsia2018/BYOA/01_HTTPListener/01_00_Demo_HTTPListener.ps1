@@ -134,7 +134,7 @@ $routes = @{
 }
 
 #Start the listener
-$url = "http://localhost:8080/"
+$url = "http://localhost:7070/"
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add($url)
 $listener.Start()

@@ -23,11 +23,18 @@ Get-InfrastructureDeploymentScript -InfrastructureType 'Microsoft Storage Spaces
 
 #region REST API
 
-Invoke-RestMethod -UseBasicParsing -Uri http://localhost:8080/infrastructureType
+Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/infrastructureType'
 Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/usageModel?infrastructureType=Microsoft Storage Spaces Direct'
 Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/deploymentModel?infrastructureType=Microsoft Storage Spaces Direct&usageModel=Hyper-Converged Infrastructure'
 Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/hostNetworkOption?infrastructureType=Microsoft Storage Spaces Direct&usageModel=Hyper-Converged Infrastructure&deploymentModel=Scalable'
 Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/hostNetworkRdmaOption?infrastructureType=Microsoft Storage Spaces Direct&usageModel=Hyper-Converged Infrastructure&deploymentModel=Scalable&hostNetwork=Fully-Converged'
 Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/deploymentTask?infrastructureType=Microsoft Storage Spaces Direct&usageModel=Hyper-Converged Infrastructure&deploymentModel=Scalable&hostNetwork=Fully-Converged&rdmaOption=RoCE'
 Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/deploymentScript?infrastructureType=Microsoft Storage Spaces Direct&usageModel=Hyper-Converged Infrastructure&deploymentModel=Scalable&hostNetwork=Fully-Converged&rdmaOption=RoCE'
+#endregion
+
+#region UI
+Set-Location -Path C:\GitHub\Presentations\psconfAsia2018\BYOA\03_DAaaS\DAaaS-UI
+.\server.ps1
+
+Stop-Polaris
 #endregion

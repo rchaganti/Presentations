@@ -1,4 +1,21 @@
-﻿#Get Infrastruture Type
+﻿Add-Type @"
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+public class TrustAllCertsPolicy : ICertificatePolicy {
+    public bool CheckValidationResult(
+    ServicePoint srvPoint, X509Certificate certificate,
+    WebRequest request, int certificateProblem) {
+        return true;
+    }
+}
+"@
+
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+
+$allProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
+[System.Net.ServicePointManager]::SecurityProtocol = $allProtocols
+
+#Get Infrastruture Type
 $uri = 'https://psconfsg2019.azurewebsites.net/api/InfrastructureType?code=Va5NmNoZXz1FC4ZFuYioWKZU6HJYCQGYTn8B47IsLWZUapDiewz/PQ=='
 Invoke-RestMethod -Method GET -UseBasicParsing -Uri $uri
 
