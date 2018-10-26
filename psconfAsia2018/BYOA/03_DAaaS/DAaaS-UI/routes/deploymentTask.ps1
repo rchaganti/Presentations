@@ -1,5 +1,5 @@
 #Load the deploymentTaskEngine module
-$modulePath = 'C:\GitHub\DeploymentAutomationAsAService\modules\deploymentTaskEngine\deploymentTaskEngine.psm1'
+$modulePath = 'C:\Documents\GitHub\DeploymentAutomationAsAService\modules\deploymentTaskEngine\deploymentTaskEngine.psm1'
 Import-Module $modulePath -Force
 
 New-PolarisPostRoute -Path "/deploymentTask" -Scriptblock {
