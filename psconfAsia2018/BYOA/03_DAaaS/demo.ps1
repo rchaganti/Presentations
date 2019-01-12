@@ -1,4 +1,4 @@
-﻿ipmo C:\Github\DeploymentAutomationAsAService\modules\deploymentTaskEngine\deploymentTaskEngine.psm1 -Force
+﻿ipmo C:\Documents\Github\DeploymentAutomationAsAService\modules\deploymentTaskEngine\deploymentTaskEngine.psm1 -Force
 
 #region backend commands
 Get-InfrastructureType
@@ -33,7 +33,7 @@ Invoke-RestMethod -UseBasicParsing -Uri 'http://localhost:8080/deploymentScript?
 #endregion
 
 #region UI
-Set-Location -Path C:\GitHub\Presentations\psconfAsia2018\BYOA\03_DAaaS\DAaaS-UI
+Set-Location -Path C:\Documents\GitHub\Presentations\psconfAsia2018\BYOA\03_DAaaS\DAaaS-UI
 .\server.ps1
 
 Stop-Polaris
