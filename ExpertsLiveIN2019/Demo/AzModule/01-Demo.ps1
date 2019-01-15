@@ -5,5 +5,5 @@ Install-Module -Name Az -Force
 # Get all Azure modules
 Get-Module -ListAvailable -Name Az*
 
-# Connect Azure Account
+# Help and documentation is still evolving
 Get-Help Connect-AzAccount -Online
