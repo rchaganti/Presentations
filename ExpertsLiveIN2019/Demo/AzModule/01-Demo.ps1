@@ -7,3 +7,16 @@ Get-Module -ListAvailable -Name Az*
 
 # Help and documentation is still evolving
 Get-Help Connect-AzAccount -Online
+
+# Login
+Connect-AzAccount
+
+# Simple command output
+Get-AzLocation 
+
+# Get only desired properties
+Get-AzLocation | Select-Object -Property DisplayName, Location
+
+# Filter output for desired text
+Get-AzLocation | Where-Object { $_.DisplayName -like "*india*"}
+

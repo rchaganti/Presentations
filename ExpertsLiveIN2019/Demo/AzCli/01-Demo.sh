@@ -33,3 +33,9 @@ az group list --query "[?location=='southindia']"
 
 ## remove resource group
 az group delete --name testRGELive2019IND --yes
+
+## Get all extensions
+az extension list-available --output table
+
+## install extension
+az extension add azure-devops
