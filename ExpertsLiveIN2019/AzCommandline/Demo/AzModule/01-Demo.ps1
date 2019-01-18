@@ -9,7 +9,11 @@ Get-Module -ListAvailable -Name Az*
 Get-Help Connect-AzAccount -Online
 
 # Login
+### Interactive
 Connect-AzAccount
+
+### Service Principal
+
 
 # Simple command output
 Get-AzLocation 
