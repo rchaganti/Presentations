@@ -13,14 +13,40 @@ Get-Help Connect-AzAccount -Online
 Connect-AzAccount
 
 ### Service Principal
+$psCredentil = Get-Credential 
+Connect-AzAccount -Credential $pscredential -ServicePrincipal -TenantId '7eb05ed1-e512-43a8-b91e-bcf3f53904f2'
 
+## Get vm image SKU list
+Get-AzVMImageSku -Location westus -PublisherName MicrosoftWindowsServer -Offer WindowsServer
 
-# Simple command output
+## Create VM
+### Simple VM
+New-AzVM -Name MyVm -Credential (Get-Credential)
+
+### VM with more custom configuration
+$VMLocalAdminUser = "rchaganti"
+$VMLocalAdminSecurePassword = ConvertTo-SecureString 'P0wer$hell' -AsPlainText -Force
+$LocationName = "westus"
+$ResourceGroupName = "S2D"
+$ComputerName = "W201604"
+$VMName = "W201604"
+$VMSize = "Standard_A2"
+
+$Credential = New-Object System.Management.Automation.PSCredential ($VMLocalAdminUser, $VMLocalAdminSecurePassword);
+
+$VirtualMachine = New-AzVMConfig -VMName $VMName -VMSize $VMSize
+$VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $Credential -ProvisionVMAgent -EnableAutoUpdate
+$VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $NIC.Id
+$VirtualMachine = Set-AzVMSourceImage -VM $VirtualMachine -PublisherName 'MicrosoftWindowsServer' -Offer 'WindowsServer' -Skus '2012-R2-Datacenter' -Version latest
+
+New-AzVM -ResourceGroupName $ResourceGroupName -Location $LocationName -VM $VirtualMachine -Verbose
+
+## Simple command output
 Get-AzLocation 
 
-# Get only desired properties
+## Get only desired properties
 Get-AzLocation | Select-Object -Property DisplayName, Location
 
-# Filter output for desired text
+## Filter output for desired text
 Get-AzLocation | Where-Object { $_.DisplayName -like "*india*"}
 
