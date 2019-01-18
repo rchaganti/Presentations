@@ -19,7 +19,10 @@ az vm image list-skus --help
 az vm image list-skus -p MicrosoftWindowsServer -f windowsserver
 
 ## Create a vm
-az vm create -n w2016vm01 -g s2d --image Win2016Datacenter
+az vm create -n w2016vm02 -g s2d --image Win2016Datacenter --location eastus --size Standard_A2
+
+## get vm
+az vm list 
 
 ## az output formats
 az account list-locations -o json
