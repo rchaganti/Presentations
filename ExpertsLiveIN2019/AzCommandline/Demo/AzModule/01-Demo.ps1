@@ -21,7 +21,7 @@ Get-AzVMImageSku -Location westus -PublisherName MicrosoftWindowsServer -Offer W
 
 ## Create VM
 ### Simple VM
-New-AzVM -Name MyVm -Credential (Get-Credential)
+New-AzVM -Name MyVm02 -Credential (Get-Credential) -ResourceGroupName s2d
 
 ### VM with more custom configuration
 $VMLocalAdminUser = "rchaganti"
@@ -36,10 +36,14 @@ $Credential = New-Object System.Management.Automation.PSCredential ($VMLocalAdmi
 
 $VirtualMachine = New-AzVMConfig -VMName $VMName -VMSize $VMSize
 $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $Credential -ProvisionVMAgent -EnableAutoUpdate
-$VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $NIC.Id
 $VirtualMachine = Set-AzVMSourceImage -VM $VirtualMachine -PublisherName 'MicrosoftWindowsServer' -Offer 'WindowsServer' -Skus '2012-R2-Datacenter' -Version latest
 
 New-AzVM -ResourceGroupName $ResourceGroupName -Location $LocationName -VM $VirtualMachine -Verbose
+
+## Stop virtual machines
+Get-AzVM -ResourceGroupName s2d -Status
+(Get-AzVM -ResourceGroupName s2d -Status).Where({$_.PowerState -eq 'VM running'})
+(Get-AzVM -ResourceGroupName s2d -Status).Where({$_.PowerState -eq 'VM running'}) | Stop-AzVM
 
 ## Simple command output
 Get-AzLocation 

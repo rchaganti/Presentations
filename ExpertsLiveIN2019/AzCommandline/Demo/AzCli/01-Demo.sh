@@ -24,6 +24,14 @@ az vm create -n w2016vm02 -g s2d --image Win2016Datacenter --location eastus --s
 ## get vm
 az vm list 
 
+## Get vm PowerState
+az vm list -g s2d -d --query "[].[name, powerState]" -o json
+
+az vm list -g s2d -d --query '[].{VMName:name, State:powerState}' -o table
+
+## Stop VM
+az vm stop --ids $(az vm list -g s2d --query "[].id" -o tsv)
+
 ## az output formats
 az account list-locations -o json
 
@@ -55,4 +63,4 @@ az group delete --name testRGELive2019IND --yes
 az extension list-available --output table
 
 ## install extension
-az extension add azure-devops
+az extension add --help
