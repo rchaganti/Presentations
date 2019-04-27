@@ -15,7 +15,7 @@ az vm list --query [*]
 az vm list --query [-1]
 
 # get a set of elements
-az vm list --query [3:5]
+az vm list --query [:2:7]
 
 # select a property
 az vm list --query [].name
@@ -25,10 +25,10 @@ $username=$(az account show --query 'user.name' --output tsv)
 $username
 
 # select multiple properties
-az vm list --query '[].[name, storageProfile.imageReference.sku]'
+az vm list --query '[].[name, storageProfile.imageReference.sku]' --output table
 
 # rename properties
-az vm list --query "[].{Name: name, OSSKU: storageProfile.imageReference.sku}"
+az vm list --query "[].{Name: name, OSSKU: storageProfile.imageReference.sku}" --output table
 
 # filter output for a specific property
 az vm list --query "[?storageProfile.osDisk.osType == 'Linux']"

@@ -12,7 +12,7 @@ az login
 az login --service-principal -u "91a8ad81-2f20-4800-8b1d-e6299f20b533" --tenant "7eb05ed1-e512-43a8-b91e-bcf3f53904f2"
 
 # finding az commands
-az find -q vm
+az find --query vm
 
 # finding sub command help
 az vm --help
