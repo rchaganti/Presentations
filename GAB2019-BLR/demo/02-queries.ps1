@@ -42,8 +42,11 @@ az vm list --query "[?tags.env == 'qa' || tags.env == 'dev'].[name, tags.env]"
 # contains function
 az vm list --show-details --output json --query "[?contains(storageProfile.imageReference.sku, '2019')]"
 
+# list all VMs in deallocated state
+az vm list -d --query "[?powerState == 'VM deallocated'].[name, location]"
+
 # nested commands with queries
-az vm start --ids $(az vm list --query "[?powerState!='VM running'].id" -o tsv)
+az vm start --ids $(az vm list -d --query "[?powerState == 'VM deallocated'].id" -o tsv)
 
 # validate queries interactively
 az vm list | jpterm
