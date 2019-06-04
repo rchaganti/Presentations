@@ -81,5 +81,7 @@ Function Get-DscConfigurationDependencyGraph
     #Show the HTML preview
     $view = New-VSCodeHtmlContentView -Title "PSDscConfigDepends" -ShowInColumn One
     Set-VSCodeHtmlContentView -View $view -Content "<h1>PSDSC Configuration Dependency Graph</h1>"
-    Write-VSCodeHtmlContentView $view -Content "Hello, World!<br />"    
+    $b64Image = [convert]::ToBase64String((get-content "${env:temp}\psdepends.png" -encoding byte))
+    Write-VSCodeHtmlContentView $view -Content "<img width=500 height=500 src='data:image/gif;base64,$b64Image'><br />"
+    Show-VSCodeHtmlContentView -HtmlContentView $view   
 }

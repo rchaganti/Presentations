@@ -1,4 +1,4 @@
-﻿using module "C:\Program Files\WindowsPowerShell\Modules\Polaris\Polaris.psd1"
+﻿Import-Module Polaris -Verbose
 Import-Module PSHTML -Verbose
 
 New-PolarisStaticRoute -RoutePath "/styles" -FolderPath "./styles"

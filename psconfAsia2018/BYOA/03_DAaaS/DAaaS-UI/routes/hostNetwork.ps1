@@ -41,7 +41,7 @@ New-PolarisPostRoute -Path "/hostNetwork" -Scriptblock {
                 input -type hidden "usageModel" -value $data.usageModel
                 input -type hidden "deploymentModel" -value $data.deploymentModel
                 input -type submit "Next" -style "background-color: #4CAF50;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;"
-            }
+            } -Enctype "multipart/form-data"
         } -Style "background: #99d6ff;"
     }
     $Response.Send($Html)

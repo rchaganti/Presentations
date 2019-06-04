@@ -19,7 +19,7 @@ New-PolarisGetRoute -Path "/home" -Scriptblock {
             h3 {
                 "Select the infrastructure type"
             }
-            form {
+            Form {
                 "InfrastructureType"
             } -action "/usageModel" -method 'post' -target '_self' -style "font-family:Candara" -Content {
                 foreach ($type in $infraType.Name)
@@ -30,7 +30,7 @@ New-PolarisGetRoute -Path "/home" -Scriptblock {
                 }
                 br {}
                 input -type submit "Next" -style "background-color: #4CAF50;border: none;color: white;padding: 16px 32px;text-decoration: none;margin: 4px 2px;cursor: pointer;"
-            }
+            } -Enctype "multipart/form-data"
         } -Style "background: #99d6ff;"
     }
     $Response.Send($Html)
