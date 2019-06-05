@@ -1,5 +1,5 @@
 Push-Location
-Set-Location -Path .\03-Polaris_PSHTML\MyResponse
+Set-Location -Path .\Demo\03-Polaris_PSHTML\MyResponse
 Import-Module PSHTML
 
 $html = html {

@@ -1,1 +1,4 @@
-Invoke-Item -Path .\02-ImportExcel\R730XD-PostCluster.xlsx
+Push-Location
+Set-Location -Path .\Demo\02-ImportExcel
+Invoke-Item -Path .\R730XD-PostCluster.xlsx
+Pop-Location
