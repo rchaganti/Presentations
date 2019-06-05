@@ -4,9 +4,9 @@ Add-Type -AssemblyName System.Web
 Push-Location
 Set-Location -Path '.\demo\03-Polaris_PSHTML\MyResponse'
 
-New-PolarisGetRoute -Path '/' -Scriptblock {
+New-PolarisGetRoute -Path '/MyRequest' -Scriptblock {
     $Response.SetContentType('text/html')
-    $Html = Get-Content -Path .\index.html
+    $Html = Get-Content -Path 'C:\Documents\GitHub\Presentations\psconfeu2019\Community\Demo\03-Polaris_PSHTML\MyResponse\index.html'
     $Response.Send($Html)
 }
 

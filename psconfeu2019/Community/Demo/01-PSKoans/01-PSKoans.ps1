@@ -4,6 +4,8 @@ Install-Module -Name PSKoans -SkipPublisherCheck -Scope CurrentUser
 # Commands in PSKoans module
 Get-Command -Module PSKoans
 
+Import-Module PSKoans
+
 # Get the loacation where PSKoans are stored
 Get-PSKoanLocation
 
