@@ -1,0 +1,8 @@
+{
+	"name": "Ubuntu",
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"features": {
+		"ghcr.io/devcontainers/features/azure-cli:1": {},
+		"ghcr.io/rchaganti/vsc-devcontainer-features/azurebicep:1": {}
+	}
+}
