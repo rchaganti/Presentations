@@ -1,6 +1,6 @@
 export INFERENCE_MODEL="llama3.1:8b"
-export OPENAI_API_KEY="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"
-export GEMINI_API_KEY="AIzaSyBUTT5_XRboYOJeDXyjkoCJajooFFYOZ3Q"
+export OPENAI_API_KEY="key"
+export GEMINI_API_KEY="key"
 export OLLAMA_URL="http://host.docker.internal:11434"
 
 # Start a Llama Stack server with OpenAI, Gemini, and Ollama inference
