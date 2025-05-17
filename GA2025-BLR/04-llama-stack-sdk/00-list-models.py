@@ -4,10 +4,10 @@ import os
 
 load_dotenv()
 
-host = os.environ['HOST']
-port = os.environ['PORT']
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
 
-client = LlamaStackClient(base_url=f'http://{host}:{port}')
+client = LlamaStackClient(base_url=f'http://{HOST}:{PORT}')
 models = client.models.list()
 for model in models:
     print("Model ID:", model.identifier)

@@ -6,11 +6,12 @@ import os
 
 load_dotenv()
 
-host = os.environ['HOST']
-port = os.environ['PORT']      
-model = os.environ['MODEL']
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
+OPENAI_MODEL = os.getenv('OPENAI_MODEL')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL')
 
-client = LlamaStackClient(base_url=f'http://{host}:{port}')
+client = LlamaStackClient(base_url=f'http://{HOST}:{PORT}')
 
 async def chat_loop():
     messages = [{
@@ -28,13 +29,13 @@ async def chat_loop():
         messages.append(message)
         response = client.inference.chat_completion(
             messages=messages,
-            model_id=model
+            model_id=OPENAI_MODEL
         )
         messages.append({
             "role": "assistant",
             "content": response.completion_message.content,
             "stop_reason": response.completion_message.stop_reason
         })
-        cprint(f'Assitant>: \n{response.completion_message.content}', 'cyan')
+        cprint(f'Assitant> {response.completion_message.content}', 'cyan')
 
 asyncio.run(chat_loop())

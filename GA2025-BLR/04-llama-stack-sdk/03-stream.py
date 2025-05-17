@@ -8,11 +8,12 @@ import json
 
 load_dotenv()
 
-host = os.environ['HOST']
-port = os.environ['PORT']      
-model = os.environ['MODEL']
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
+OPENAI_MODEL = os.getenv('OPENAI_MODEL')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL')
 
-client = LlamaStackClient(base_url=f'http://{host}:{port}')
+client = LlamaStackClient(base_url=f'http://{HOST}:{PORT}')
 
 async def chat_loop():
     messages = [{
@@ -30,7 +31,7 @@ async def chat_loop():
         messages.append(message)
         response = client.inference.chat_completion(
             messages=messages,
-            model_id=model,
+            model_id=GEMINI_MODEL,
             stream=True
         )
 

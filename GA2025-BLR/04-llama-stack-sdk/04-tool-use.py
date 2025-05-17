@@ -17,9 +17,13 @@ from llama_stack_client.types.shared.tool_response_message import ToolResponseMe
 load_dotenv()
 
 HOST='localhost'
-PORT=8321
-MODEL='meta-llama/Llama-3.2-3B-Instruct'
-BRAVE_SEARCH_API_KEY = os.environ["BRAVE_SEARCH_API_KEY"]
+
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
+OPENAI_MODEL = os.getenv('OPENAI_MODEL')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL')
+
+BRAVE_API_KEY = os.getenv("BRAVE_API_KEY")
 
 class BraveSearch:
     def __init__(self, api_key: str) -> None:
@@ -107,7 +111,7 @@ class WebSearchTool(ClientTool):
         return formatted_result
 
 async def execute_search(query: str):
-    web_search_tool = WebSearchTool(api_key=BRAVE_SEARCH_API_KEY)
+    web_search_tool = WebSearchTool(api_key=BRAVE_API_KEY)
     result = await web_search_tool.run_impl(query)
     print("Search Results:", result)
 
@@ -115,22 +119,18 @@ query = "What are the latest developments in Agentic AI?"
 asyncio.run(execute_search(query))
 
 async def run_main(disable_safety: bool = False):
-    # Initialize the Llama Stack client with the specified base URL
     client = LlamaStackClient(
         base_url=f"http://{HOST}:{PORT}",
     )
 
-    # Configure input and output shields for safety (use "llama_guard" by default)
     input_shields = [] if disable_safety else ["llama_guard"]
     output_shields = [] if disable_safety else ["llama_guard"]
 
-    # Initialize custom tool (ensure `WebSearchTool` is defined earlier in the notebook)
-    webSearchTool = WebSearchTool(api_key=BRAVE_SEARCH_API_KEY)
+    webSearchTool = WebSearchTool(api_key=BRAVE_API_KEY)
 
-    # Create an agent instance with the client and configuration
     agent = Agent(
         client,
-        model=MODEL,
+        model=OPENAI_MODEL,
         instructions="""You are a helpful assistant that responds to user queries with relevant information and cites sources when available.""",
         sampling_params={
             "strategy": {
@@ -143,7 +143,6 @@ async def run_main(disable_safety: bool = False):
         enable_session_persistence=False,
     )
 
-    # Create a session for interaction and print the session ID
     session_id = agent.create_session("test-session")
     print(f"Created session_id={session_id} for Agent({agent.agent_id})")
 
@@ -151,16 +150,14 @@ async def run_main(disable_safety: bool = False):
         messages=[
             {
                 "role": "user",
-                "content": """What are the latest developments in Agentic AI?""",
+                "content": """What's somme trending Agentic AI content?""",
             }
         ],
-        session_id=session_id,  # Use the created session ID
+        session_id=session_id,
     )
 
-    # Log and print the response from the agent asynchronously
     async for log in EventLogger().log(response):
         log.print()
 
 
-# Run the function asynchronously in a Jupyter Notebook cell
 run_main(disable_safety=True)

@@ -1,0 +1,29 @@
+version: '2'
+distribution_spec:
+  name: 'ga2025-lstack'
+  description: 'GA 2025 LStack'
+  providers:
+    inference:
+    - remote::openai
+    - remote::gemini
+    - remote::ollama
+    vector_io:
+    - remote::pgvector
+    - inline::faiss
+    safety:
+    - inline::llama-guard
+    scoring:
+    - inline::basic
+    eval:
+    - inline::meta-reference
+    datasetio:
+    - inline::localfs
+    agents:
+    - inline::meta-reference
+    tool_runtime:
+    - inline::rag-runtime
+    - remote::model-context-protocol
+    - remote::brave-search
+    telemetry:
+    - inline::meta-reference
+image_type: container

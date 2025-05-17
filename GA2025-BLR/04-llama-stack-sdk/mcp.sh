@@ -1,0 +1,1 @@
+npx -y supergateway --port 8888 --stdio '/mnt/c/Users/ravik/.local/bin/uv.exe --directory /mnt/c/GitHub/azure-mcp-server/ run azure-mcp-server'
